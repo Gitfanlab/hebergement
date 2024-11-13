@@ -15,8 +15,8 @@ class AffectationController extends Controller
      */
     public function index(Profil $profil)
     {
-        $affectations = Affectation::where("profil_id", $profil->id)->get();
-        return view("affectations.index", compact('profil', 'affectations'));
+        $affectations = Affectation::where('profil_id', $profil->id)->paginate(10);
+        return view('affectations.index', compact('profil', 'affectations'));
     }
 
     /**

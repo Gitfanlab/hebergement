@@ -13,7 +13,7 @@ class PersonnelController extends Controller
      */
     public function index()
     {
-        $personnels = Personnel::all();
+        $personnels = Personnel::paginate(10);
         return view('personnels.index', compact('personnels'));
     }
 
@@ -90,6 +90,7 @@ class PersonnelController extends Controller
      */
     public function destroy(Personnel $personnel)
     {
+        $personnel->affectations()->delete();
         $personnel->delete();
 
         return redirect()->route('personnels.index')->with('success', 'Personnel deleted successfully.');

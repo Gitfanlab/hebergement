@@ -13,7 +13,7 @@ class PosteController extends Controller
      */
     public function index()
     {
-        $postes = Poste::all();
+        $postes = Poste::paginate(10);
         return view('postes.index', compact('postes'));
     }
 
@@ -100,6 +100,7 @@ class PosteController extends Controller
      */
     public function destroy(Poste $poste)
     {
+        $poste->affectations()->delete();
         $poste->delete();
 
         return redirect()->route('postes.index')->with('success', 'Poste deleted successfully.');
