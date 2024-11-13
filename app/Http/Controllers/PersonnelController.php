@@ -11,10 +11,29 @@ class PersonnelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $personnels = Personnel::paginate(10);
-        return view('personnels.index', compact('personnels'));
+        $grades = Grade::all();
+        $query = Personnel::query();
+
+        // Filter by search term (name)
+        if ($request->filled('search')) {
+            $query->where('email', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by sexe
+        if ($request->filled('sexe')) {
+            $query->where('sexe', $request->sexe);
+        }
+
+        // Filter by grade
+        if ($request->filled('grade_id')) {
+            $query->where('grade_id', $request->grade_id);
+        }
+
+        $personnels = $query->paginate(10); // Paginate the results
+
+        return view('personnels.index', compact('personnels', 'grades')); // Pass necessary data to the view
     }
 
     /**

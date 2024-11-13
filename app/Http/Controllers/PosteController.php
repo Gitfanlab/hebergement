@@ -11,10 +11,39 @@ class PosteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $postes = Poste::paginate(10);
-        return view('postes.index', compact('postes'));
+        $grades = Grade::all();
+        $query = Poste::query();
+
+        // Filter by search term (name)
+        if ($request->filled('search')) {
+            $query->where('code', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by grade
+        if ($request->filled('grade_id')) {
+            $query->where('grade_id', $request->grade_id);
+        }
+
+        // Filter by sexe
+        if ($request->filled('sexe')) {
+            $query->where('sexe', $request->sexe);
+        }
+
+        // Add filters for groupement and service (assuming they are columns in your table)
+        if ($request->filled('groupement_id')) {
+            $query->where('groupement_id', $request->groupement_id);
+        }
+
+        if ($request->filled('service_id')) {
+            $query->where('service_id', $request->service_id);
+        }
+
+        $postes = $query->orderBy('code')->paginate(10); // Order by code
+
+        return view('postes.index', compact('postes', 'grades')); // Pass grades for the filter
     }
 
     /**

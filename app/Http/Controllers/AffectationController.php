@@ -13,10 +13,33 @@ class AffectationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Profil $profil)
+    // public function index(Profil $profil)
+    // {
+    //     $affectations = Affectation::where('profil_id', $profil->id)->paginate(10);
+    //     return view('affectations.index', compact('profil', 'affectations'));
+    // }
+
+    public function index(Profil $profil, Request $request)
     {
-        $affectations = Affectation::where('profil_id', $profil->id)->paginate(10);
-        return view('affectations.index', compact('profil', 'affectations'));
+        $postes = Poste::all();
+        $personnels = Personnel::all();
+        $affectations = Affectation::where('profil_id', $profil->id);
+
+        if ($request->filled('date_debut') && $request->filled('date_fin')) {
+            $affectations->whereBetween('date_debut', [$request->date_debut, $request->date_fin]);
+        }
+    
+        if ($request->filled('poste_id')) {
+            $affectations->where('poste_id', $request->poste_id);
+        }
+    
+        if ($request->filled('personnel_id')) {
+            $affectations->where('personnel_id', $request->personnel_id);
+        }
+
+        $affectations = $affectations->paginate(10);
+
+        return view('affectations.index', compact('profil', 'affectations', 'postes', 'personnels'));
     }
 
     /**

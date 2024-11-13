@@ -13,6 +13,40 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <h2 class="text-xl font-semibold mb-2">Filtres</h2>
+                    <form method="GET" action="{{ route('postes.index') }}">
+                        <div class="mb-4 flex gap-4">
+                            <div>
+                                <label for="search">Rechercher par nom :</label>
+                                <input type="text" name="search" id="search" value="{{ request('search') }}">
+                            </div>
+                            <div>
+                                <label for="grade_id">Grade :</label>
+                                <select name="grade_id" id="grade_id">
+                                    <option value="">Tous</option>
+                                    @foreach ($grades as $grade)
+                                        <option value="{{ $grade->id }}"
+                                            {{ request('grade_id') == $grade->id ? 'selected' : '' }}>
+                                            {{ $grade->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="sexe">Sexe :</label>
+                                <select name="sexe" id="sexe">
+                                    <option value="">Tous</option>
+                                    <option value="Masculin" {{ request('sexe') == 'Masculin' ? 'selected' : '' }}>
+                                        Masculin
+                                    </option>
+                                    <option value="Feminin" {{ request('sexe') == 'Feminin' ? 'selected' : '' }}>Féminin
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="submit"
+                                class="bg-blue-500 hover:bg-blue-700 text-white text-xs leading-5 uppercase tracking-widest py-2 px-3 rounded">Filtrer</button>
+                        </div>
+                    </form>
                     <div class="mb-4">
                         {{ $postes->links() }}
                     </div>
