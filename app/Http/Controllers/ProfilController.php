@@ -79,6 +79,7 @@ class ProfilController extends Controller
      */
     public function destroy(Profil $profil)
     {
+        $profil->affectations()->delete();
         $profil->delete();
 
         return redirect()->route('profils.index')->with('success', 'Profil deleted successfully.');   
