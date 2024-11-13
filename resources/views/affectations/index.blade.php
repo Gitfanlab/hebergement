@@ -2,10 +2,16 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight flex justify-between">
             {{ $profil->nom }} : {{ __('Liste des affectations') }}
-            <a href="{{ route('affectations.create', $profil) }}"
-                class="bg-green-500 hover:bg-green-700 text-white text-xs leading-5 uppercase tracking-widest py-2 px-3 rounded">
-                Créer
-            </a>
+            <div class="flex gap-4">
+                <a href="{{ route('affectations.chart', $profil) }}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white text-xs leading-5 uppercase tracking-widest py-2 px-3 rounded">
+                    Calendrier
+                </a>
+                <a href="{{ route('affectations.create', $profil) }}"
+                    class="bg-green-500 hover:bg-green-700 text-white text-xs leading-5 uppercase tracking-widest py-2 px-3 rounded">
+                    Créer
+                </a>
+            </div>
         </h2>
     </x-slot>
 
