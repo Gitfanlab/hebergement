@@ -42,6 +42,29 @@ class AffectationController extends Controller
         return view('affectations.index', compact('profil', 'affectations', 'postes', 'personnels'));
     }
 
+    public function chart(Profil $profil, Request $request)
+    {
+        $postes = Poste::all();
+        $personnels = Personnel::all();
+        $affectations = Affectation::where('profil_id', $profil->id);
+
+        if ($request->filled('date_debut') && $request->filled('date_fin')) {
+            $affectations->whereBetween('date_debut', [$request->date_debut, $request->date_fin]);
+        }
+    
+        if ($request->filled('poste_id')) {
+            $affectations->where('poste_id', $request->poste_id);
+        }
+    
+        if ($request->filled('personnel_id')) {
+            $affectations->where('personnel_id', $request->personnel_id);
+        }
+
+        $affectations = $affectations->paginate(10);
+
+        return view('affectations.chart', compact('profil', 'affectations', 'postes', 'personnels'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

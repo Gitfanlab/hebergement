@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
 
     // Affectations Routes (Assuming they depend on Profil)
     Route::get('/profils/{profil}/affectations', [AffectationController::class, 'index'])->name('affectations.index');
+    Route::get('/profils/{profil}/affectations/chart', [AffectationController::class, 'chart'])->name('affectations.chart');
     Route::get('/profils/{profil}/affectations/create', [AffectationController::class, 'create'])->name('affectations.create');
     Route::post('/profils/{profil}/affectations', [AffectationController::class, 'store'])->name('affectations.store');
     Route::get('/profils/{profil}/affectations/{affectation}/edit', [AffectationController::class, 'edit'])->name('affectations.edit');
